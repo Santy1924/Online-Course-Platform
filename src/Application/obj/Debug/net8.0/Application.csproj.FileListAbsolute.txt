@@ -1,0 +1,16 @@
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.csproj.AssemblyReference.cache
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.AssemblyInfoInputs.cache
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.AssemblyInfo.cs
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.csproj.CoreCompileInputs.cache
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.sourcelink.json
+/home/Coder/Online-Course-Platform/src/Application/bin/Debug/net8.0/Application.deps.json
+/home/Coder/Online-Course-Platform/src/Application/bin/Debug/net8.0/Application.dll
+/home/Coder/Online-Course-Platform/src/Application/bin/Debug/net8.0/Application.pdb
+/home/Coder/Online-Course-Platform/src/Application/bin/Debug/net8.0/Domain.dll
+/home/Coder/Online-Course-Platform/src/Application/bin/Debug/net8.0/Domain.pdb
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.csproj.CopyComplete
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.dll
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/refint/Application.dll
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/Application.pdb
+/home/Coder/Online-Course-Platform/src/Application/obj/Debug/net8.0/ref/Application.dll

@@ -1,0 +1,12 @@
+/home/Coder/Online-Course-Platform/src/Domain/bin/Debug/net8.0/Domain.deps.json
+/home/Coder/Online-Course-Platform/src/Domain/bin/Debug/net8.0/Domain.dll
+/home/Coder/Online-Course-Platform/src/Domain/bin/Debug/net8.0/Domain.pdb
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfoInputs.cache
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/Domain.AssemblyInfo.cs
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/Domain.csproj.CoreCompileInputs.cache
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/Domain.sourcelink.json
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/Domain.dll
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/refint/Domain.dll
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/Domain.pdb
+/home/Coder/Online-Course-Platform/src/Domain/obj/Debug/net8.0/ref/Domain.dll
