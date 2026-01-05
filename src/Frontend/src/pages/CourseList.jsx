@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import api from '../services/api';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const CourseList = () => {
+    const { isAdmin } = useContext(AuthContext);
     const [courses, setCourses] = useState([]);
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState('');
@@ -95,9 +97,11 @@ const CourseList = () => {
                             <div style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
                                 <Link to={`/courses/${course.id}`} className="btn btn-outline" style={{ flex: 1 }}>Editar</Link>
                                 <Link to={`/courses/${course.id}/lessons`} className="btn btn-outline" style={{ flex: 1 }}>Lecciones</Link>
-                                <button onClick={() => handleDelete(course.id)} className="btn btn-outline" style={{ color: 'var(--danger)' }}>
-                                    🗑️
-                                </button>
+                                {isAdmin() && (
+                                    <button onClick={() => handleDelete(course.id)} className="btn btn-outline" style={{ color: 'var(--danger)' }}>
+                                        🗑️
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))}

@@ -55,6 +55,7 @@ public class CoursesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(Guid id)
     {
         try
@@ -69,6 +70,7 @@ public class CoursesController : ControllerBase
     }
 
     [HttpPatch("{id}/publish")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Publish(Guid id)
     {
         try
@@ -87,6 +89,7 @@ public class CoursesController : ControllerBase
     }
 
     [HttpPatch("{id}/unpublish")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Unpublish(Guid id)
     {
         try

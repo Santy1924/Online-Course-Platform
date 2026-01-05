@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import api from '../services/api';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const CourseEdit = () => {
+    const { isAdmin } = useContext(AuthContext);
     const { id } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
@@ -99,7 +101,7 @@ const CourseEdit = () => {
                             {loading ? 'Guardando...' : 'Guardar Cambios'}
                         </button>
 
-                        {id && (
+                        {id && isAdmin() && (
                             <button
                                 type="button"
                                 onClick={handlePublish}

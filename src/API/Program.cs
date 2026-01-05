@@ -64,7 +64,9 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"]
+        ValidAudience = jwtSettings["Audience"],
+        RoleClaimType = System.Security.Claims.ClaimTypes.Role,
+        NameClaimType = System.Security.Claims.ClaimTypes.Name
     };
 });
 
@@ -104,14 +106,31 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<ApplicationDbContext>();
     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
     dbContext.Database.Migrate();
 
-    // Seed User
-    if (!await userManager.Users.AnyAsync())
+    // Seed Roles
+    string[] roleNames = { "Admin", "User" };
+    foreach (var roleName in roleNames)
     {
-        var user = new IdentityUser { UserName = "test@example.com", Email = "test@example.com" };
-        await userManager.CreateAsync(user, "Password123!");
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+
+    // Seed User
+    var adminUser = await userManager.FindByEmailAsync("admin@gmail.com");
+    if (adminUser == null)
+    {
+        adminUser = new IdentityUser { UserName = "admin@gmail.com", Email = "admin@gmail.com" };
+        await userManager.CreateAsync(adminUser, "Admin123*");
+    }
+
+    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+    {
+        await userManager.AddToRoleAsync(adminUser, "Admin");
     }
 }
 

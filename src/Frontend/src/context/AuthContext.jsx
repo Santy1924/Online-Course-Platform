@@ -39,8 +39,16 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    const isAdmin = () => {
+        if (!user) return false;
+        // Check for standard ASP.NET Core role claim and short 'role' claim
+        const roles = user['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || user['role'];
+        if (!roles) return false;
+        return Array.isArray(roles) ? roles.includes('Admin') : roles === 'Admin';
+    };
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, loading, isAdmin }}>
             {children}
         </AuthContext.Provider>
     );
