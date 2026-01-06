@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import api from '../services/api';
 import { useParams, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const LessonList = () => {
+    const { isAdmin } = useContext(AuthContext);
     const { courseId } = useParams();
     const [lessons, setLessons] = useState([]);
     const [course, setCourse] = useState(null);
@@ -62,12 +64,25 @@ const LessonList = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('¿Deseas eliminar esta lección?')) {
+        if (window.confirm('¿Deseas eliminar esta lección? (Borrado lógico)')) {
             try {
                 await api.delete(`/lessons/${id}`);
                 fetchLessons();
             } catch (error) {
                 console.error('Error deleting lesson', error);
+            }
+        }
+    };
+
+    const handleHardDelete = async (id) => {
+        if (window.confirm('⚠️ ¡ATENCIÓN! Esta acción eliminará la lección PERMANENTEMENTE y no se puede deshacer. ¿Estás seguro?')) {
+            try {
+                await api.delete(`/lessons/${id}/hard`);
+                fetchLessons();
+            } catch (error) {
+                console.error('Error hard deleting lesson', error);
+                const message = error.response?.data?.message || error.response?.data || 'Error al eliminar permanentemente la lección.';
+                alert(`Error: ${message}`);
             }
         }
     };
@@ -182,7 +197,12 @@ const LessonList = () => {
                                     </button>
                                 </div>
                                 <button onClick={() => handleEdit(lesson)} className="btn btn-outline" style={{ fontSize: '0.875rem' }}>Editar</button>
-                                <button onClick={() => handleDelete(lesson.id)} className="btn btn-outline" style={{ color: 'var(--danger)', fontSize: '0.875rem' }}>Eliminar</button>
+                                {isAdmin() && (
+                                    <div style={{ display: 'flex', gap: '0.25rem' }}>
+                                        <button onClick={() => handleDelete(lesson.id)} className="btn btn-outline" style={{ color: 'var(--danger)', fontSize: '0.875rem' }} title="Borrado Lógico">🗑️</button>
+                                        <button onClick={() => handleHardDelete(lesson.id)} className="btn btn-outline" style={{ color: 'white', backgroundColor: 'var(--danger)', fontSize: '0.875rem' }} title="Borrado Permanente">🔥</button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}

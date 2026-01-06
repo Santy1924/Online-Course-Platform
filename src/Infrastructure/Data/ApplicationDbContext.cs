@@ -30,7 +30,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
             entity.HasMany(e => e.Lessons)
                   .WithOne(l => l.Course)
                   .HasForeignKey(l => l.CourseId)
-                  .OnDelete(DeleteBehavior.Restrict); // Prevent physical delete cascade if we want soft delete logic
+                  .OnDelete(DeleteBehavior.Cascade); // Allow physical delete cascade for hard delete
         });
 
         builder.Entity<Lesson>(entity =>

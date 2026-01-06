@@ -9,6 +9,8 @@ public interface ILessonRepository
     Task AddAsync(Lesson lesson);
     Task UpdateAsync(Lesson lesson);
     Task DeleteAsync(Lesson lesson); // Soft delete
+    Task HardDeleteAsync(Lesson lesson);
+    Task<Lesson?> GetByIdIgnoreFiltersAsync(Guid id);
     Task<bool> IsOrderUniqueAsync(Guid courseId, int order);
     Task<int> GetMaxOrderAsync(Guid courseId);
 }

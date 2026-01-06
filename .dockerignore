@@ -1,0 +1,9 @@
+**/.git
+**/.vs
+**/bin
+**/obj
+**/node_modules
+**/dist
+.dockerignore
+docker-compose.yml
+docker-compose.override.yml

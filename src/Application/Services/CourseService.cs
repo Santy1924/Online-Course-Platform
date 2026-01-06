@@ -85,6 +85,14 @@ public class CourseService : ICourseService
         await _courseRepository.DeleteAsync(course);
     }
 
+    public async Task HardDeleteAsync(Guid id)
+    {
+        var course = await _courseRepository.GetByIdIgnoreFiltersAsync(id);
+        if (course == null) throw new KeyNotFoundException("Course not found");
+
+        await _courseRepository.HardDeleteAsync(course);
+    }
+
     public async Task PublishAsync(Guid id)
     {
         var course = await _courseRepository.GetByIdAsync(id);
@@ -119,6 +127,22 @@ public class CourseService : ICourseService
             Title = course.Title,
             TotalLessons = course.Lessons.Count(l => !l.IsDeleted),
             LastModified = course.UpdatedAt
+        };
+    }
+
+    public async Task<DashboardMetricsDto> GetDashboardMetricsAsync()
+    {
+        var totalCourses = await _courseRepository.CountAsync(null, null);
+        var publishedCourses = await _courseRepository.CountAsync(null, CourseStatus.Published);
+        var draftCourses = await _courseRepository.CountAsync(null, CourseStatus.Draft);
+        var totalLessons = await _courseRepository.CountLessonsAsync();
+
+        return new DashboardMetricsDto
+        {
+            TotalCourses = totalCourses,
+            PublishedCourses = publishedCourses,
+            DraftCourses = draftCourses,
+            TotalLessons = totalLessons
         };
     }
 }

@@ -34,12 +34,25 @@ const CourseList = () => {
     }, [page, search, status]);
 
     const handleDelete = async (id) => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar este curso?')) {
+        if (window.confirm('¿Estás seguro de que deseas eliminar este curso? (Borrado lógico)')) {
             try {
                 await api.delete(`/courses/${id}`);
                 fetchCourses();
             } catch (error) {
                 console.error('Error deleting course', error);
+            }
+        }
+    };
+
+    const handleHardDelete = async (id) => {
+        if (window.confirm('⚠️ ¡ATENCIÓN! Esta acción eliminará el curso PERMANENTEMENTE de la base de datos y no se puede deshacer. ¿Estás seguro?')) {
+            try {
+                await api.delete(`/courses/${id}/hard`);
+                fetchCourses();
+            } catch (error) {
+                console.error('Error hard deleting course', error);
+                const message = error.response?.data?.message || error.response?.data || 'Error al eliminar permanentemente el curso.';
+                alert(`Error: ${message}`);
             }
         }
     };
@@ -98,9 +111,14 @@ const CourseList = () => {
                                 <Link to={`/courses/${course.id}`} className="btn btn-outline" style={{ flex: 1 }}>Editar</Link>
                                 <Link to={`/courses/${course.id}/lessons`} className="btn btn-outline" style={{ flex: 1 }}>Lecciones</Link>
                                 {isAdmin() && (
-                                    <button onClick={() => handleDelete(course.id)} className="btn btn-outline" style={{ color: 'var(--danger)' }}>
-                                        🗑️
-                                    </button>
+                                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                        <button onClick={() => handleDelete(course.id)} className="btn btn-outline" style={{ color: 'var(--danger)', padding: '0.5rem' }} title="Borrado Lógico">
+                                            🗑️
+                                        </button>
+                                        <button onClick={() => handleHardDelete(course.id)} className="btn btn-outline" style={{ color: 'white', backgroundColor: 'var(--danger)', padding: '0.5rem' }} title="Borrado Permanente">
+                                            🔥
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         </div>

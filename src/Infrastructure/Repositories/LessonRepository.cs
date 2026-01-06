@@ -48,6 +48,19 @@ public class LessonRepository : ILessonRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task HardDeleteAsync(Lesson lesson)
+    {
+        _context.Lessons.Remove(lesson);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Lesson?> GetByIdIgnoreFiltersAsync(Guid id)
+    {
+        return await _context.Lessons
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(l => l.Id == id);
+    }
+
     public async Task<bool> IsOrderUniqueAsync(Guid courseId, int order)
     {
         return !await _context.Lessons.AnyAsync(l => l.CourseId == courseId && l.Order == order);

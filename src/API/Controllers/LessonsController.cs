@@ -82,6 +82,21 @@ public class LessonsController : ControllerBase
         }
     }
 
+    [HttpDelete("{id}/hard")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> HardDelete(Guid id)
+    {
+        try
+        {
+            await _lessonService.HardDeleteAsync(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
     [HttpPost("reorder")]
     public async Task<IActionResult> Reorder([FromBody] ReorderLessonsDto dto)
     {

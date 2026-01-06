@@ -91,7 +91,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowAll");
 
@@ -101,36 +104,49 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Apply migrations and seed data
-using (var scope = app.Services.CreateScope())
+for (int i = 0; i < 10; i++)
 {
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<ApplicationDbContext>();
-    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-    dbContext.Database.Migrate();
-
-    // Seed Roles
-    string[] roleNames = { "Admin", "User" };
-    foreach (var roleName in roleNames)
+    try
     {
-        if (!await roleManager.RoleExistsAsync(roleName))
+        using (var scope = app.Services.CreateScope())
         {
-            await roleManager.CreateAsync(new IdentityRole(roleName));
+            var services = scope.ServiceProvider;
+            var dbContext = services.GetRequiredService<ApplicationDbContext>();
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            dbContext.Database.Migrate();
+
+            // Seed Roles
+            string[] roleNames = { "Admin", "User" };
+            foreach (var roleName in roleNames)
+            {
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            // Seed User
+            var adminUser = await userManager.FindByEmailAsync("admin@gmail.com");
+            if (adminUser == null)
+            {
+                adminUser = new IdentityUser { UserName = "admin@gmail.com", Email = "admin@gmail.com" };
+                await userManager.CreateAsync(adminUser, "Admin123*");
+            }
+
+            if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
         }
+        break; // Success!
     }
-
-    // Seed User
-    var adminUser = await userManager.FindByEmailAsync("admin@gmail.com");
-    if (adminUser == null)
+    catch (Exception ex)
     {
-        adminUser = new IdentityUser { UserName = "admin@gmail.com", Email = "admin@gmail.com" };
-        await userManager.CreateAsync(adminUser, "Admin123*");
-    }
-
-    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
-    {
-        await userManager.AddToRoleAsync(adminUser, "Admin");
+        Console.WriteLine($"Database migration/seeding failed (attempt {i + 1}/10): {ex.Message}");
+        if (i == 9) throw;
+        Thread.Sleep(5000); // Wait 5 seconds before retrying
     }
 }
 

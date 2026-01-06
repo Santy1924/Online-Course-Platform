@@ -64,6 +64,20 @@ public class CourseRepository : ICourseRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task HardDeleteAsync(Course course)
+    {
+        _context.Courses.Remove(course);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Course?> GetByIdIgnoreFiltersAsync(Guid id)
+    {
+        return await _context.Courses
+            .IgnoreQueryFilters()
+            .Include(c => c.Lessons)
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
     public async Task<int> CountAsync(string? search, CourseStatus? status)
     {
         var query = _context.Courses.AsQueryable();
@@ -79,5 +93,10 @@ public class CourseRepository : ICourseRepository
         }
 
         return await query.CountAsync();
+    }
+
+    public async Task<int> CountLessonsAsync()
+    {
+        return await _context.Lessons.CountAsync();
     }
 }

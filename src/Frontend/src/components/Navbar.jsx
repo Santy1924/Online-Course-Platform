@@ -37,6 +37,14 @@ const Navbar = () => {
                     EduPlatform
                 </Link>
                 <div style={{ display: 'flex', gap: '1.5rem' }}>
+                    <Link to="/dashboard" style={{
+                        textDecoration: 'none',
+                        color: 'var(--text-main)',
+                        fontWeight: 500,
+                        fontSize: '0.9rem'
+                    }}>
+                        Dashboard
+                    </Link>
                     <Link to="/courses" style={{
                         textDecoration: 'none',
                         color: 'var(--text-main)',

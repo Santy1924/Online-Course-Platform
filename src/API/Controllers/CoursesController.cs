@@ -69,6 +69,21 @@ public class CoursesController : ControllerBase
         }
     }
 
+    [HttpDelete("{id}/hard")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> HardDelete(Guid id)
+    {
+        try
+        {
+            await _courseService.HardDeleteAsync(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
     [HttpPatch("{id}/publish")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Publish(Guid id)

@@ -10,5 +10,8 @@ public interface ICourseRepository
     Task AddAsync(Course course);
     Task UpdateAsync(Course course);
     Task DeleteAsync(Course course); // Soft delete
+    Task HardDeleteAsync(Course course);
+    Task<Course?> GetByIdIgnoreFiltersAsync(Guid id);
     Task<int> CountAsync(string? search, CourseStatus? status);
+    Task<int> CountLessonsAsync();
 }

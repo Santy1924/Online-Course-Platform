@@ -126,6 +126,21 @@ public class LessonService : ILessonService
         }
     }
 
+    public async Task HardDeleteAsync(Guid id)
+    {
+        var lesson = await _lessonRepository.GetByIdIgnoreFiltersAsync(id);
+        if (lesson == null) throw new KeyNotFoundException("Lesson not found");
+
+        await _lessonRepository.HardDeleteAsync(lesson);
+
+        // Update course last modification date
+        var course = await _courseRepository.GetByIdIgnoreFiltersAsync(lesson.CourseId);
+        if (course != null)
+        {
+            await _courseRepository.UpdateAsync(course);
+        }
+    }
+
     public async Task ReorderAsync(Guid courseId, List<Guid> newOrder)
     {
         var lessons = (await _lessonRepository.GetByCourseIdAsync(courseId)).ToList();
